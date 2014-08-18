@@ -52,36 +52,32 @@ class Model(object):
 
     def __init__(self, *args, **kwargs):
 
-        fields = [field for field in self.__class__.__dict__ if field not in self.__class__.__base__.__dict__ ]
+        fields = [field for field in self.__class__.__dict__ ]
 
         for field in fields:
             field_type = self.__class__.__dict__[field]
 
-            if hasattr(field_type, '__name__') and field_type.__name__ == "Field":
+            if inspect.isclass(field_type) and issubclass(field_type, Field):
                 self.__dict__[field] = field_type()
-            else:
-                self.__dict__[field] = field_type
 
-    #   for field_name, field_type in self.fields.items():
-    #       print "Create new field", field_name
-    #       self.__dict__["__"+str(field_name)] = field_type
+        print "DICT: ", self.__dict__
 
-    #       if field_name in kwargs:
-    #           print "Save field value", field_name
-    #           self.__dict__["__"+str(field_name)].value = kwargs[field_name]
+        for field in kwargs :
+            print "Save field value", field
+            self.__dict__["__"+str(field)].value = kwargs[field]
 
     @classmethod
     def query(cls, *args, **kwargs):
         cmd = "SELECT "
         fields = [field for field in cls.__dict__ if field not in cls.__base__.__dict__ ]
 
+        field_list = []
         for field in fields:
             field_type = cls.__dict__[field]
 
             # if not hasattr(field_type, '__name__') and not field_type.__name__ == "Field":
             if isinstance(field_type, property):
-                if field == 'app_id':
-                    field = 'id'
+                field_list.append(field)
                 cmd += str(field)
                 cmd += ", "
 
@@ -103,5 +99,11 @@ class Model(object):
         if cur.rowcount < 1:
             return None
         else:
-            row = cur.fetchall()
-            return row
+            # row = cur.fetchone()
+            rows = cur.fetchall()
+            print len(rows)
+            # kwargs = {}
+            # for idx,field in enumerate(field_list):
+            #     kwargs[field] = row[idx]
+            # return cls(**kwargs)
+            return [cls(**dict((field, row[idx]) for (idx,field) in enumerate(field_list))) for row in rows]
