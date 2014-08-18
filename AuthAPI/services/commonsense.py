@@ -2,7 +2,7 @@ import senseapi
 from flask import g
 from .. import app
 import json
-from tmaapi.responses import respond
+from ..responses import respond
 
 _config = None
 

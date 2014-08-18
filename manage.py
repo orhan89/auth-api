@@ -1,5 +1,5 @@
 from flask.ext.script import Manager
-from APP_NAME import app
+from AuthAPI import app
 
 manager = Manager(app)
 

@@ -1,6 +1,6 @@
 import os
-import APP_NAME
+import AuthAPI
 
 if __name__ == '__main__':
-    APP_NAME.configure_app('/etc/APP_NAME/development.cfg')
-    APP_NAME.app.run(host='0.0.0.0', port=5000)
+    AuthAPI.configure_app('/etc/AuthAPI/development.cfg')
+    AuthAPI.app.run(host='0.0.0.0', port=5000)

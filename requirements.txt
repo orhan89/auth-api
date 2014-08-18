@@ -1,3 +1,5 @@
 flask>=0.10.1
 flask-cors
 Flask-Script
+mysql-python
+senseapi
