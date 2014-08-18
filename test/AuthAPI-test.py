@@ -1,15 +1,15 @@
 import os
 import unittest
-import APP_NAME
+import AuthAPI
 
-class APP_NAMETest(unittest.TestCase):
+class AuthAPITest(unittest.TestCase):
 
     def cleanDatabase(self):
         # connect to db
-        d = APP_NAME.app.config['DB_DATABASE']
-        u = APP_NAME.app.config['DB_USERNAME']
-        p = APP_NAME.app.config['DB_PASSWORD']
-        f = "db/APP_NAME-api-test.sql"
+        d = AuthAPI.app.config['DB_DATABASE']
+        u = AuthAPI.app.config['DB_USERNAME']
+        p = AuthAPI.app.config['DB_PASSWORD']
+        f = "db/AuthAPI-api-test.sql"
 
         from subprocess import Popen, PIPE
         process = Popen('mysql -u%s -p%s' % (u, p),
@@ -19,10 +19,10 @@ class APP_NAMETest(unittest.TestCase):
 
     def populateDatabase(self):
         # connect to db
-        d = APP_NAME.app.config['DB_DATABASE']
-        u = APP_NAME.app.config['DB_USERNAME']
-        p = APP_NAME.app.config['DB_PASSWORD']
-        f = "db/APP_NAME-data-test.sql"
+        d = AuthAPI.app.config['DB_DATABASE']
+        u = AuthAPI.app.config['DB_USERNAME']
+        p = AuthAPI.app.config['DB_PASSWORD']
+        f = "db/AuthAPI-data-test.sql"
 
         from subprocess import Popen, PIPE
         process = Popen('mysql %s -u%s -p%s' % (d, u, p),
@@ -31,8 +31,8 @@ class APP_NAMETest(unittest.TestCase):
         print output
 
     def setUp(self):
-        APP_NAME.configure_app('/etc/APP_NAME/testing.cfg')
-        self.app = APP_NAME.app.test_client()
+        AuthAPI.configure_app('/etc/AuthAPI/testing.cfg')
+        self.app = AuthAPI.app.test_client()
         self.cleanDatabase()
         self.populateDatabase()
         print "++++++++++++++++++"

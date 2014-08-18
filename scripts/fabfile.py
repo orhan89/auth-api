@@ -1,19 +1,19 @@
 from fabric.api import *
 import time, json
 
-app_name = 'APP_NAME'
+app_name = 'AuthAPI'
 uwsgi_apps_enabled = '/etc/uwsgi/apps-enabled'
 uwsgi_touch_path = '/var/run/uwsgi'
 
 num_keep_releases = 5
 
-file_list = [   '../APP_NAME/controllers/*.py',
-                '../APP_NAME/decorators/*.py',
-                '../APP_NAME/models/*.py',
-                '../APP_NAME/services/*.py',
-                '../APP_NAME/responses/*.py',
-                '../APP_NAME/views/*.py',
-                '../APP_NAME/*.py',
+file_list = [   '../AuthAPI/controllers/*.py',
+                '../AuthAPI/decorators/*.py',
+                '../AuthAPI/models/*.py',
+                '../AuthAPI/services/*.py',
+                '../AuthAPI/responses/*.py',
+                '../AuthAPI/views/*.py',
+                '../AuthAPI/*.py',
                 '../conf/uwsgi.ini',
                 '../requirements.txt'   ]
 

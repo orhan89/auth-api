@@ -23,7 +23,7 @@ def configure_app(config_file):
         from logging.handlers import SMTPHandler
 
         # log everything >= DEBUG to a file
-        file_handler = logging.FileHandler("/var/log/APP_NAME/tma-api.log")
+        file_handler = logging.FileHandler("/var/log/AuthAPI/tma-api.log")
         file_handler.setLevel(logging.DEBUG)
         app.logger.addHandler(file_handler)
 
@@ -31,8 +31,8 @@ def configure_app(config_file):
         email_handler = SMTPHandler(    '127.0.0.1',
                                         "ADMIN_EMAIL",
                                         app.config['ADMINS'],
-                                        "Exception in APP_NAME")
+                                        "Exception in AuthAPI")
         email_handler.setLevel(logging.ERROR)
         app.logger.addHandler(email_handler)
 
-configure_app('/etc/APP_NAME/production.cfg')
+configure_app('/etc/AuthAPI/production.cfg')
