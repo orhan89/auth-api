@@ -21,10 +21,12 @@ CREATE TABLE `applications` (
 -- -----------------------------------------------------
 DROP TABLE `applications_key`;
 CREATE TABLE IF NOT EXISTS `applications_key` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `application_id` int(11) NOT NULL REFERENCES applications(id),
   `type` varchar(50) NOT NULL,
   `key` varchar(50) NOT NULL,
-  INDEX `key` (`key`),
+  PRIMARY KEY (`id`)
+  KEY `key` (`key`),
   FOREIGN KEY (`application_id`)
   	  REFERENCES applications(id)
 	  ON UPDATE CASCADE
