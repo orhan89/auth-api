@@ -16,7 +16,10 @@ class Login(Resource):
 
         data = login_reqparse.parse_args()
 
-        username = data["username"] + "@" + str(g._application.suffix)
+        username = data["username"]
+
+        if hasattr(g,'_application'):
+            username = username + "@" + str(g._application.suffix)
 
         result, err = commonsense.login_user(username, data['password'])
 

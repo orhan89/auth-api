@@ -29,7 +29,7 @@ def authentication_required(f):
 
 
 app_key_reqparse = reqparse.RequestParser()
-app_key_reqparse.add_argument('X-APPLICATION-KEY', type = str, required = True, location='headers', dest='app_key')
+app_key_reqparse.add_argument('X-APPLICATION-KEY', type = str, required = False, location='headers', dest='app_key')
 
 #Application verification wrapper. Checks if the application key is valid
 def application_verification(f):
@@ -39,14 +39,15 @@ def application_verification(f):
 
         app_key = app_key_reqparse.parse_args()['app_key']
 
-        application_key = Application_Key.query(key=app_key)
+        if app_key:
+            application_key = Application_Key.query(key=app_key)
 
-        if not application_key:
-            respond(e_invalid_app_key)
+            if not application_key:
+                respond(e_invalid_app_key)
 
-        application = application_key[0].application_id
+            application = application_key[0].application_id
 
-        g._application = application
+            g._application = application
 
         return f(*args, **kwargs)
 
