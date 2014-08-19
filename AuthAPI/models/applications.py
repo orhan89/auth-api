@@ -7,7 +7,14 @@ class Application(models.Model):
 
     model_name = 'applications'
     
-    id = models.Field
-    name = models.Field
-    suffix = models.Field
+    id = models.Field()
+    name = models.Field(default="Application Name")
+    suffix = models.Field()
 
+class Application_Key(models.Model):
+
+	model_name = 'applications_key'
+
+	application_id = models.ForeignField(related="applications.id")
+	type = models.Field()
+	key = models.Field()
