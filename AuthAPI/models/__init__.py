@@ -33,7 +33,8 @@ class ForeignField(Field):
 
     def setValue(self, value):
         # items = self.related_class.query()
-        obj = [item for item in self.related_class.query() if item.__dict__["__"+str(self.related_field)].getValue() == value]
+        # obj = [item for item in self.related_class.query() if item.__dict__["__"+str(self.related_field)].getValue() == value]
+        obj = self.related_class.query({self.related_field: value})
         if obj:
             print "there is existing object"
             self.value = obj[0]
@@ -105,7 +106,6 @@ class Model(object):
         for field in fields:
             field_type = cls.__dict__[field]
 
-            # if not hasattr(field_type, '__name__') and not field_type.__name__ == "Field":
             if isinstance(field_type, property):
                 field_list.append(field)
                 cmd += '`'+str(field)+'`'
@@ -114,6 +114,22 @@ class Model(object):
         cmd = cmd.rstrip(', ')
 
         cmd += " FROM " + cls.model_name
+
+        if kwargs:
+            cmd += " WHERE "
+
+            for k,v in kwargs.items():
+                if k in field_list:
+                    cmd += '`'+str(k)+'`'
+                    cmd += "="
+                    if isinstance(v,str):
+                        cmd += "\""
+                    cmd += str(v)
+                    if isinstance(v,str):
+                        cmd += "\""
+                    cmd += "AND"
+
+            cmd = cmd.rstrip('AND')
 
         print "COMMAND :", cmd
 
@@ -129,11 +145,6 @@ class Model(object):
         if cur.rowcount < 1:
             return None
         else:
-            # row = cur.fetchone()
             rows = cur.fetchall()
             print len(rows)
-            # kwargs = {}
-            # for idx,field in enumerate(field_list):
-            #     kwargs[field] = row[idx]
-            # return cls(**kwargs)
             return [cls(**dict((field, row[idx]) for (idx,field) in enumerate(field_list))) for row in rows]
