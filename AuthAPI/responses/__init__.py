@@ -1,4 +1,5 @@
 from flask import make_response
+from flask.ext.restful import abort
 
 s_created       = {"msg": "", "code": 201}
 s_no_content    = {"msg": "", "code": 204}
@@ -19,4 +20,4 @@ e_internal_error        = {"msg": "internal error!", "code": 500}
 e_bad_gateway           = {"msg": "interaction with focuscura failed!", "code": 502}
 
 def respond(response):
-    return make_response(response["msg"], response["code"])
+    abort(response["code"], message=response["msg"])

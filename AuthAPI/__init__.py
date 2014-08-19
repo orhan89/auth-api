@@ -1,10 +1,11 @@
 from flask import Flask
+from flask.ext.restful import Api
 
 app = Flask(__name__)
+api = Api(app)
 
 from services import mysql_db, commonsense
 from controllers import *
-from views import *
 
 def configure_app(config_file):
     app.config.from_pyfile(config_file)
