@@ -7,7 +7,6 @@ class Application(models.Model):
 
     model_name = 'applications'
     
-    id = models.Field()
     name = models.Field(default="Application Name")
     suffix = models.Field()
 

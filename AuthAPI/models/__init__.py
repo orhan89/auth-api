@@ -81,12 +81,20 @@ class Model(object):
     __metaclass__ = ModelMeta
     # fields = {}
 
+    id = Field()
+
     def __init__(self, *args, **kwargs):
 
-        fields = [field for field in self.__class__.__dict__ ]
+        fields = [field for field in self.__class__.__dict__ ] + [field for field in self.__class__.__base__.__dict__]
 
         for field in fields:
-            field_type = self.__class__.__dict__[field]
+            field_type = None
+            if field in self.__class__.__dict__:
+                field_type = self.__class__.__dict__[field]
+            elif field in self.__class__.__base__.__dict__:
+                field_type = self.__class__.__base__.__dict__[field]
+            else:
+                field_type = None
 
             if isinstance(field_type, Field):
                 self.__dict__[field] = field_type.clone()
@@ -100,11 +108,16 @@ class Model(object):
     @classmethod
     def query(cls, *args, **kwargs):
         cmd = "SELECT "
-        fields = [field for field in cls.__dict__ if field not in cls.__base__.__dict__ ]
+        fields = [field for field in cls.__dict__] + [field for field in cls.__base__.__dict__]
 
         field_list = []
         for field in fields:
-            field_type = cls.__dict__[field]
+            if field in cls.__dict__:
+                field_type = cls.__dict__[field]
+            elif field in cls.__base__.__dict__:
+                field_type = cls.__base__.__dict__[field]
+            else:
+                field_type = None
 
             if isinstance(field_type, property):
                 field_list.append(field)
