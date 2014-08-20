@@ -5,16 +5,19 @@ from AuthAPI.decorators import *
 from AuthAPI.responses import *
 from AuthAPI.services import commonsense
 
-login_reqparse = reqparse.RequestParser()
-login_reqparse.add_argument('username', type = str, required = True, location='json')
-login_reqparse.add_argument('password', type = str, required = True, location='json')
 
 class Login(Resource):
     method_decorators = [decorators.application_verification,]
 
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('username', type = str, required = True, location='json')
+        self.reqparse.add_argument('password', type = str, required = True, location='json')
+        super(Login, self).__init__()
+
     def post(self):
 
-        data = login_reqparse.parse_args()
+        data = self.reqparse.parse_args()
 
         username = data["username"]
 
